@@ -15,6 +15,7 @@ pub fn main() !void {
         v.* = rnd.intRangeAtMost(T, 0, 199);
     }
     const Test = enum { min, max, indexOfScalar, eql };
+    // modify this to test another function
     const current_test = Test.eql;
     print("Testing {s}:\n", .{@tagName(current_test)});
 
