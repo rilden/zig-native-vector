@@ -44,7 +44,7 @@ pub fn main() !void {
                 speed2 = timeIt2(T, find_index, comptime vectorized.eql, items[0..find_index], items[find_index..][0..find_index]);
             },
             .indexOfScalar => {
-                checkResult2(T, std.mem.indexOfScalar, vectorized.indexOfScalar, items[0..find_index], find_value);
+                checkResult2opt(T, std.mem.indexOfScalar, vectorized.indexOfScalar, items[0..find_index], find_value);
                 speed1 = timeIt2(T, find_index, comptime std.mem.indexOfScalar, items[0..find_index], find_value);
                 speed2 = timeIt2(T, find_index, comptime vectorized.indexOfScalar, items[0..find_index], find_value);
             },
@@ -113,5 +113,11 @@ fn checkResult1(comptime T: type, comptime func_std: anytype, func_vec: anytype,
 fn checkResult2(comptime T: type, comptime func_std: anytype, func_vec: anytype, arg1: anytype, arg2: anytype) void {
     const res_std = func_std(T, arg1, arg2);
     const res_vec = func_vec(T, arg1, arg2);
+    if (res_std != res_vec) print("Error: std.mem returned {d}, vectorized returned {d}\n", .{ res_std, res_vec });
+}
+
+fn checkResult2opt(comptime T: type, comptime func_std: anytype, func_vec: anytype, arg1: anytype, arg2: anytype) void {
+    const res_std = func_std(T, arg1, arg2).?;
+    const res_vec = func_vec(T, arg1, arg2).?;
     if (res_std != res_vec) print("Error: std.mem returned {d}, vectorized returned {d}\n", .{ res_std, res_vec });
 }
