@@ -17,7 +17,7 @@ pub fn main() !void {
     const Test = enum { min, max, indexOfScalar, eql };
     // modify this to test another function
     const current_test = Test.eql;
-    print("Testing {s}:\n", .{@tagName(current_test)});
+    print("Testing {s}(" ++ @typeName(T) ++ "):\n", .{@tagName(current_test)});
 
     for ([_]usize{ 1, 5, 50, 500, 5000, 50000, 500_000 }) |find_index, i| {
         const find_value: T = 200 + @intCast(T, i);
